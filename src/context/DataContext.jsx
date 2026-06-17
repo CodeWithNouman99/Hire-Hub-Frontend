@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import axios from "axios";
 
 export const DataContext = createContext(null);
@@ -20,7 +20,7 @@ export const DataProvider = ({ children }) => {
       {
         params: {
           query: query,
-          num_pages: "1",
+          num_pages: "3",
           country: "pk",
           date_posted: "all",
         },
@@ -61,3 +61,6 @@ export const DataProvider = ({ children }) => {
     </DataContext.Provider>
   );
 };
+
+//This is the custom Hook
+export const getData = ()=> useContext(DataContext)
