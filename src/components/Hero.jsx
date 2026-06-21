@@ -23,17 +23,17 @@ const Hero = () => {
           </p>
 
           {/* Search Box */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-3 flex flex-col md:flex-row gap-3 max-w-2xl">
-            <div className="flex items-center gap-2 flex-1 px-3">
+          {/* <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-3 flex flex-col md:flex-row gap-3 max-w-2xl"> */}
+            {/* <div className="flex items-center gap-2 flex-1 px-3">
               <Search size={20} className="text-gray-400" />
               <input
                 type="text"
                 placeholder="Job title or keyword"
                 className="w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
               />
-            </div>
+            </div> */}
 
-            <div className="hidden md:flex items-center gap-2 flex-1 px-3 border-l border-gray-200">
+            {/* <div className="hidden md:flex items-center gap-2 flex-1 px-3 border-l border-gray-200">
               <MapPin size={20} className="text-gray-400" />
               <input
                 type="text"
@@ -45,7 +45,7 @@ const Hero = () => {
             <button className="bg-teal-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-teal-600 hover:scale-105 transition-all duration-300 shadow-md">
               Search
             </button>
-          </div>
+          </div> */}
 
           {/* Stats Cards */}
           <div className="grid grid-cols-2 gap-4 max-w-md">

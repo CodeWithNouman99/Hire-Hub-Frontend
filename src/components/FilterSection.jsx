@@ -1,200 +1,170 @@
-// import React from 'react'
+import { useMemo } from "react";
+import {
+  LayoutGrid,
+  Code2,
+  Palette,
+  Megaphone,
+  Coins,
+  Briefcase,
+  Headphones,
+  X,
+} from "lucide-react";
 
-// const FilterSection = () => {
-//   return (
-//     <div>
-//       Filter
-//     </div>
-//   )
-// }
-// // 
-// export default FilterSection
+const CATEGORY_ICONS = {
+  Development: Code2,
+  Design: Palette,
+  Marketing: Megaphone,
+  Finance: Coins,
+  Business: Briefcase,
+  Support: Headphones,
+};
 
-// components/FilterSection.jsx
-import { useState } from "react";
-import { Search, MapPin, X } from "lucide-react";
+const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Internship"];
+const WORK_MODES = ["Remote", "Hybrid", "On-site"];
 
-const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Internship", "Remote"];
-const EXPERIENCE = ["Entry", "Mid", "Senior", "Lead"];
-const CATEGORIES = ["Engineering", "Design", "Marketing", "Sales", "Product", "Finance"];
-
-const FilterSection = ({ onChange }) => {
-  const [filters, setFilters] = useState({
-    search: "",
-    location: "",
-    types: [],
-    experience: "",
-    categories: [],
-    salary: 50,
-  });
-
-  const update = (next) => {
-    const merged = { ...filters, ...next };
-    setFilters(merged);
-    onChange?.(merged);
-  };
-
-  const toggleArray = (key, value) => {
-    const arr = filters[key].includes(value)
-      ? filters[key].filter((v) => v !== value)
-      : [...filters[key], value];
-    update({ [key]: arr });
-  };
-
-  const reset = () =>
-    update({
-      search: "",
-      location: "",
-      types: [],
-      experience: "",
-      categories: [],
-      salary: 50,
+/**
+ * Controlled filter sidebar.
+ * filters: { category: "all" | string, type: string, mode: string, location: string }
+ * onChange(key, value) updates a single filter
+ * onReset() clears all filters
+ */
+const FilterSection = ({ jobs = [], filters, onChange, onReset }) => {
+  const categories = useMemo(() => {
+    const counts = {};
+    jobs.forEach((j) => {
+      if (j.cat) counts[j.cat] = (counts[j.cat] || 0) + 1;
     });
+    return Object.keys(counts).map((name) => ({ name, count: counts[name] }));
+  }, [jobs]);
+
+  const locations = useMemo(() => {
+    return Array.from(new Set(jobs.map((j) => j.location).filter(Boolean)));
+  }, [jobs]);
+
+  const hasActiveFilters =
+    filters.category !== "all" || filters.type || filters.mode || filters.location;
+
+  const toggleType = (t) => onChange("type", filters.type === t ? "" : t);
+  const toggleMode = (m) => onChange("mode", filters.mode === m ? "" : m);
 
   return (
-    <div className="space-y-6">
-      {/* Search */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Search
-        </label>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            value={filters.search}
-            onChange={(e) => update({ search: e.target.value })}
-            placeholder="Job title or keyword"
-            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      {/* Location */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Location
-        </label>
-        <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            value={filters.location}
-            onChange={(e) => update({ location: e.target.value })}
-            placeholder="City or remote"
-            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      {/* Job Type */}
-      <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Job Type</h3>
-        <div className="space-y-2">
-          {JOB_TYPES.map((type) => (
-            <label
-              key={type}
-              className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900"
+    <aside className="w-full lg:w-1/4 lg:sticky lg:top-6 self-start">
+      <div className="bg-white border border-gray-100 rounded-2xl p-5 space-y-6">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-900">Filters</h3>
+          {hasActiveFilters && (
+            <button
+              onClick={onReset}
+              className="flex items-center gap-1 text-[12px] text-gray-400 hover:text-gray-700"
             >
-              <input
-                type="checkbox"
-                checked={filters.types.includes(type)}
-                onChange={() => toggleArray("types", type)}
-                className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-              />
-              {type}
-            </label>
-          ))}
+              <X size={12} /> Clear
+            </button>
+          )}
+        </div>
+
+        {/* Category */}
+        <div>
+          <p className="text-[12px] font-medium text-gray-500 uppercase tracking-wide mb-2.5">
+            Category
+          </p>
+          <div className="space-y-1">
+            <button
+              onClick={() => onChange("category", "all")}
+              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[13px] transition-colors ${
+                filters.category === "all"
+                  ? "bg-teal-50 text-teal-700 font-medium"
+                  : "text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <LayoutGrid size={14} /> All categories
+              </span>
+              <span className="text-[11px] text-gray-400">{jobs.length}</span>
+            </button>
+
+            {categories.map(({ name, count }) => {
+              const Icon = CATEGORY_ICONS[name] || Briefcase;
+              return (
+                <button
+                  key={name}
+                  onClick={() => onChange("category", name)}
+                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[13px] transition-colors ${
+                    filters.category === name
+                      ? "bg-teal-50 text-teal-700 font-medium"
+                      : "text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <Icon size={14} /> {name}
+                  </span>
+                  <span className="text-[11px] text-gray-400">{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Job type */}
+        <div>
+          <p className="text-[12px] font-medium text-gray-500 uppercase tracking-wide mb-2.5">
+            Job type
+          </p>
+          <div className="space-y-1.5">
+            {JOB_TYPES.map((t) => (
+              <label key={t} className="flex items-center gap-2 text-[13px] text-gray-600 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={filters.type === t}
+                  onChange={() => toggleType(t)}
+                  className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                />
+                {t}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Work mode */}
+        <div>
+          <p className="text-[12px] font-medium text-gray-500 uppercase tracking-wide mb-2.5">
+            Work mode
+          </p>
+          <div className="space-y-1.5">
+            {WORK_MODES.map((m) => (
+              <label key={m} className="flex items-center gap-2 text-[13px] text-gray-600 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={filters.mode === m}
+                  onChange={() => toggleMode(m)}
+                  className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                />
+                {m}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Location */}
+        <div>
+          <p className="text-[12px] font-medium text-gray-500 uppercase tracking-wide mb-2.5">
+            Location
+          </p>
+          <select
+            value={filters.location}
+            onChange={(e) => onChange("location", e.target.value)}
+            className="w-full text-[13px] border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-gray-400"
+          >
+            <option value="">All locations</option>
+            {locations.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
-
-      {/* Experience */}
-      <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Experience</h3>
-        <div className="flex flex-wrap gap-2">
-          {EXPERIENCE.map((level) => {
-            const active = filters.experience === level;
-            return (
-              <button
-                key={level}
-                type="button"
-                onClick={() =>
-                  update({ experience: active ? "" : level })
-                }
-                className={`px-3 py-1.5 text-xs font-medium rounded-full border transition ${
-                  active
-                    ? "bg-teal-600 text-white border-teal-600"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-teal-400"
-                }`}
-              >
-                {level}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Categories */}
-      <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Category</h3>
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => {
-            const active = filters.categories.includes(cat);
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => toggleArray("categories", cat)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full border transition ${
-                  active
-                    ? "bg-teal-50 text-teal-700 border-teal-300"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-teal-400"
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Salary */}
-      <div>
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-medium text-gray-700">
-            Min Salary
-          </h3>
-          <span className="text-sm font-semibold text-teal-600">
-            ${filters.salary}k
-          </span>
-        </div>
-        <input
-          type="range"
-          min="0"
-          max="200"
-          step="5"
-          value={filters.salary}
-          onChange={(e) => update({ salary: Number(e.target.value) })}
-          className="w-full accent-teal-600"
-        />
-        <div className="flex justify-between text-xs text-gray-400 mt-1">
-          <span>$0k</span>
-          <span>$200k+</span>
-        </div>
-      </div>
-
-      {/* Reset */}
-      <button
-        type="button"
-        onClick={reset}
-        className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
-      >
-        <X className="h-4 w-4" />
-        Reset Filters
-      </button>
-    </div>
+    </aside>
   );
 };
 
 export default FilterSection;
-

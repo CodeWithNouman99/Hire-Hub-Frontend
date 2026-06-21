@@ -21,8 +21,8 @@ const JobCategories = () => {
     <section className="relative py-20 px-5 bg-white overflow-hidden">
       {/* Subtle ambient blobs */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-0 right-0 w-[480px] h-[300px] rounded-full bg-teal-50 opacity-60 blur-3xl translate-x-1/3 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-[360px] h-[240px] rounded-full bg-orange-50 opacity-50 blur-3xl -translate-x-1/4 translate-y-1/4" />
+        <div className="absolute top-0 right-0 w-120 h-75 rounded-full bg-teal-50 opacity-60 blur-3xl translate-x-1/3 -translate-y-1/4" />
+        <div className="absolute bottom-0 left-0 w-90 h-60 rounded-full bg-orange-50 opacity-50 blur-3xl -translate-x-1/4 translate-y-1/4" />
       </div>
 
       <div className="relative max-w-6xl mx-auto">

@@ -12,7 +12,7 @@ import {
 const Navbar = () => {
   const Links = [
     { name: "Home", path: "/" },
-    { name: "Find Jobs", path: "/find-jobs" },
+    // { name: "Find Jobs", path: "/find-jobs" },
     { name: "Post Job", path: "/post-job" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
