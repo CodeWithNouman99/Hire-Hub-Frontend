@@ -40,10 +40,7 @@ const FindJob = () => {
         {/* Jobs Section */}
         {!loading && !error && jobs?.length > 0 && (
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filter Section */}
-            <div className="w-full lg:w-1/4">
-              <FilterSection />
-            </div>
+           
 
             {/* Job Cards */}
             <div className="w-full lg:w-3/4 grid grid-cols-1 gap-5">
