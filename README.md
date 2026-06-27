@@ -73,7 +73,7 @@ Integrated chatbot that answers predefined career and job-related questions.
 
 ```bash
 # Clone the repository
-git clone <https://github.com/CodeWithNouman99/Hire-Hub-Frontend>
+git clone https://github.com/CodeWithNouman99/Hire-Hub-Frontend
 
 # Navigate to the project folder
 cd hirehub
