@@ -14,7 +14,7 @@ A modern job portal web application built with React and Tailwind CSS that helps
 
 ## 📂 GitHub Repository
 
-🔗 https://github.com/CodeWithNouman99
+🔗 https://github.com/CodeWithNouman99/Hire-Hub-Frontend
 
 ---
 
@@ -73,7 +73,7 @@ Integrated chatbot that answers predefined career and job-related questions.
 
 ```bash
 # Clone the repository
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <https://github.com/CodeWithNouman99/Hire-Hub-Frontend>
 
 # Navigate to the project folder
 cd hirehub
